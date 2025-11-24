@@ -1,30 +1,14 @@
-# React + TypeScript + Vite
+# Granular Synth (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Setup
+- Prereqs: Node 18+ and npm.
+- Install dependencies: `npm install`
+- Start dev server: `npm run dev` (open the printed http://localhost:5173 URL)
+- Build: `npm run build`
+- Preview production build: `npm run preview`
+- Lint: `npm run lint`
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Usage
+- Click **Load sample** to choose an audio file (wav/ogg/mp3/mp4/aac/flac).
+- If your browser does not support `showOpenFilePicker`, the app will open a standard file dialog via a hidden file input.
+- After loading, use the on-screen keyboard and controls to play and tweak grains.
