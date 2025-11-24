@@ -1,3 +1,5 @@
+import type { ChangeEvent } from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
 import { GlobalStyle } from './styled'
 import { Display } from './Display'
@@ -13,23 +15,9 @@ function App() {
   const actx = useAppState(state => state.actx)
   const setBuffer = useAppState(state => state.setBuffer)
   const setReverseBuffer = useAppState(state => state.setReverseBuffer)
-  
-  async function handleLoadSample() {
-    const [fileHandle] = await window.showOpenFilePicker({
-      types: [
-        {
-          description: 'Audio files',
-          accept: {
-            'audio/*': ['.wav', '.ogg', '.mp3', '.mp4', '.aac', '.flac'],
-          }
-        },
-      ],
-      excludeAcceptAllOption: true,
-      multiple: false,
-    });
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
-    const file = await fileHandle.getFile();
-
+  async function handleFile(file: File | null) {
     if (file === null) return;
 
     const arrayBuffer = await file.arrayBuffer();
@@ -43,12 +31,52 @@ function App() {
     }
     setReverseBuffer(reverseBuffer);
   }
+  
+  async function handleLoadSample() {
+    if (window.showOpenFilePicker) {
+      try {
+        const [fileHandle] = await window.showOpenFilePicker({
+          types: [
+            {
+              description: 'Audio files',
+              accept: {
+                'audio/*': ['.wav', '.ogg', '.mp3', '.mp4', '.aac', '.flac'],
+              }
+            },
+          ],
+          excludeAcceptAllOption: true,
+          multiple: false,
+        });
+
+        await handleFile(await fileHandle.getFile());
+      } catch (error) {
+        const isAbort = error instanceof DOMException && error.name === 'AbortError';
+        // If user cancels, do nothing; otherwise try the input fallback.
+        if (!isAbort) fileInputRef.current?.click();
+      }
+    } else {
+      fileInputRef.current?.click();
+    }
+  }
+
+  async function handleFileInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    await handleFile(file);
+    event.target.value = '';
+  }
 
   return (
     <Wrapper>
       <GlobalStyle/>
       <Buttons>
         <button onClick={handleLoadSample}>Load sample</button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="audio/*"
+          style={{ display: 'none' }}
+          onChange={handleFileInputChange}
+        />
       </Buttons>
       <Display/>
       <Keyboard/>
