@@ -1,6 +1,6 @@
 # Granular Synth 
 
-Basic granular synthesizer with a GR-1 inspired display. Forked from arekdurlik/waa-granular
+Basic granular synthesizer with a GR-1 inspired display. Forked from [arekdurlik/waa-granular](https://github.com/arekdurlik/waa-granular)
 
 
 ## Setup
